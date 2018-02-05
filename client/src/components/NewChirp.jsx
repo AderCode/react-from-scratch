@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Avatar from "./Avatar";
 import ChirpStyle from "./ChirpStyle";
 
@@ -51,46 +51,51 @@ class NewChirp extends React.Component {
   //   console.log(chirpsArray);
   // }
 
-  fetchPost(event){
-    let url = '/api/chirps/'
+  fetchPost(event) {
+    let url = "/api/chirps/";
     event.preventDefault();
-    let data = { text: this._inputElement.value }
+    let data = { text: this._inputElement.value };
     fetch(url, {
-      method: 'POST', // or 'PUT'
-      body: JSON.stringify(data), 
+      method: "POST", // or 'PUT'
+      body: JSON.stringify(data),
       headers: new Headers({
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       })
-  })
-  console.log('fetchPost() completed. data = ', data)
-}
-
+    });
+    console.log("fetchPost() completed. data = ", data);
+    location.reload(false);
+  }
 
   render() {
     return (
-      <div className="col justify-content-lg-center border bg-white">
-        <div className="form-group text-left">
-          <h6 className="mt-3">
-            <Avatar />
-            <label className="ml-2">Create a Chirp:</label>
-          </h6>
-          <form onSubmit={this.fetchPost}>
-            <input
-              className="w-100"
-              id="chirp-input"
-              placeholder="What's happening?"
-            />
-            <div>
+      <Fragment>
+        <div className="col justify-content-lg-center border bg-white">
+          <div className="form-group text-left">
+            <h6 className="mt-3">
+              <Avatar />
+              <label className="ml-2">Create a Chirp:</label>
+            </h6>
+            <form onSubmit={this.fetchPost}>
               <input
-                className="btn btn-primary w-100 mt-1"
-                type="submit"
-                value="Post"
+                className="w-100"
+                id="chirp-input"
+                ref={a => {
+                  this._inputElement = a;
+                }}
+                placeholder="What's happening?"
               />
-            </div>
-          </form>
+              <div>
+                <input
+                  className="btn btn-primary w-100 mt-1"
+                  type="submit"
+                  value="Post"
+                />
+              </div>
+            </form>
+          </div>
         </div>
-        <ChirpStyle chirps={this.state.chirps} />
-      </div>
+        <ChirpStyle />
+      </Fragment>
     );
   }
 }

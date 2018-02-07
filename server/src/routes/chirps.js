@@ -31,8 +31,8 @@ router.post("/", (req, res) => {
 router.put("/:id?", (req, res) => {
   let id = req.params.id;
   store.UpdateChirp(id, req.body.text);
-  console.log(id);
-  console.log(req.body.text);
+  // console.log(id);
+  // console.log(req.body.text);
   res.status(200);
   res.redirect("/");
 });

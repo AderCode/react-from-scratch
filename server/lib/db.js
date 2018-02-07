@@ -78,7 +78,7 @@ var updateChirp = function updateChirp(id, text) {
 
 var createChirp = function createChirp(userid, text, location) {
   return new Promise(function (resolve, reject) {
-    connection.query("insert into chirps (userid, text, location) values (" + userid + ", '" + text + "', '" + location + "');", function (err, results, field) {
+    connection.query("insert into chirps (userid, text, location) values (" + userid + ", \"" + text + "\", \"" + location + "\");", function (err, results, field) {
       if (err) {
         reject();
         connection.end();
@@ -172,7 +172,7 @@ var createMention = function createMention(userid, chirpid) {
       }
       console.log('\x1b[32m', '(>^.^)> Creating Mention...', '\x1b[0m');
       console.log('\x1b[32m', '(>^.^)> 1. chirpid = ', chirpid, '\x1b[0m');
-      console.log('\x1b[32m', '(>^.^)> 2. chirpid = ', userid, '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> 2. userid = ', userid, '\x1b[0m');
       console.log('\x1b[32m', '(>^.^)> Mention Created.', '\x1b[0m', '\n');
 
       resolve(results);

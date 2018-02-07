@@ -79,7 +79,7 @@ let updateChirp = (id, text) => {
 
 let createChirp = (userid, text, location) => {
   return new Promise((resolve, reject) => {
-    connection.query(`insert into chirps (userid, text, location) values (${userid}, '${text}', '${location}');`, (err, results, field) => {
+    connection.query(`insert into chirps (userid, text, location) values (${userid}, "${text}", "${location}");`, (err, results, field) => {
       if (err) {
         reject();
         connection.end();
@@ -142,12 +142,12 @@ let checkMentions = (text, userid) => {
         console.log('\x1b[32m', '(>^.^)> 4. chirpid = ', chirpid, '\x1b[0m');
         let userHandle = str[index];
         console.log('\x1b[32m', '(>^.^)> 5. userHandle = ', userHandle, '\x1b[0m')
-        
+
         if (userHandle) {
-        prepareMentions(userHandle, chirpid)
-        console.log('\x1b[32m', '(>^.^)> Mention Found. Passing params to PrepareMention()', '\x1b[0m', '\n')
+          prepareMentions(userHandle, chirpid)
+          console.log('\x1b[32m', '(>^.^)> Mention Found. Passing params to PrepareMention()', '\x1b[0m', '\n')
         } else {
-        console.log('\x1b[32m', '(>^.^)> No Mention Found.', '\x1b[0m', '\n')
+          console.log('\x1b[32m', '(>^.^)> No Mention Found.', '\x1b[0m', '\n')
         }
 
         resolve();
@@ -172,10 +172,10 @@ let prepareMentions = (userHandle, chirpid) => {
       console.log('\x1b[32m', '(>^.^)> Preparing Mentions...', '\x1b[0m');
       console.log('\x1b[32m', '(>^.^)> 1. results = ', results, '\x1b[0m');
       if (results[0].id) {
-      console.log('\x1b[32m', '(>^.^)> User Found. Passing params to CreateMention().', '\x1b[0m', '\n');
-      createMention(results[0].id, chirpid)
+        console.log('\x1b[32m', '(>^.^)> User Found. Passing params to CreateMention().', '\x1b[0m', '\n');
+        createMention(results[0].id, chirpid)
       } else {
-      console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", "User not found in database.", "\x1b[0m", '\n');
+        console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", "User not found in database.", "\x1b[0m", '\n');
       }
       resolve();
     });
@@ -197,7 +197,7 @@ let createMention = (userid, chirpid) => {
       }
       console.log('\x1b[32m', '(>^.^)> Creating Mention...', '\x1b[0m');
       console.log('\x1b[32m', '(>^.^)> 1. chirpid = ', chirpid, '\x1b[0m');
-      console.log('\x1b[32m', '(>^.^)> 2. chirpid = ', userid, '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> 2. userid = ', userid, '\x1b[0m');
       console.log('\x1b[32m', '(>^.^)> Mention Created.', '\x1b[0m', '\n')
 
       resolve(results);

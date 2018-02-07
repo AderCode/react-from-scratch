@@ -46,8 +46,8 @@ router.post("/", function (req, res) {
 router.put("/:id?", function (req, res) {
   var id = req.params.id;
   _db2.default.UpdateChirp(id, req.body.text);
-  console.log(id);
-  console.log(req.body.text);
+  // console.log(id);
+  // console.log(req.body.text);
   res.status(200);
   res.redirect("/");
 });

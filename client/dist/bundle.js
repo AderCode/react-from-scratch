@@ -1668,9 +1668,7 @@ var ChirpStyle = function (_Component) {
           console.log("obj[" + id + ".text = ]", obj[id].text);
           return _react2.default.createElement(
             "div",
-            { key: "" + obj[id].id, onClick: function onClick() {
-                window.location = "/" + obj[id].id;
-              } },
+            { key: "" + obj[id].id },
             _react2.default.createElement(
               "div",
               { className: "card mt-1 mb-1" },
@@ -1693,7 +1691,9 @@ var ChirpStyle = function (_Component) {
                       { className: "mt-0 d-inline mx-1" },
                       _react2.default.createElement(
                         _reactRouterDom.Link,
-                        { to: "/mentions/" + obj[id].userid },
+                        {
+                          style: { color: 'inherit' },
+                          to: "/mentions/" + obj[id].userid },
                         "Name",
                         obj[id].userid
                       )
@@ -1712,9 +1712,13 @@ var ChirpStyle = function (_Component) {
                 )
               ),
               _react2.default.createElement(
-                "div",
-                { className: "card-body text-left ml-5 pt-0" },
-                obj[id].text
+                _reactRouterDom.Link,
+                { style: { color: 'black' }, to: "/" + obj[id].id },
+                _react2.default.createElement(
+                  "div",
+                  { className: "card-body text-left ml-5 pt-0" },
+                  obj[id].text
+                )
               )
             )
           );
@@ -1725,7 +1729,6 @@ var ChirpStyle = function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      // console.log("Final log this.state.chirps.text = ", this.state.chirps.text);
       return _react2.default.createElement(
         _react.Fragment,
         null,
@@ -1738,11 +1741,6 @@ var ChirpStyle = function (_Component) {
 }(_react.Component);
 
 exports.default = ChirpStyle;
-
-
-{
-  /* <div>{this.state.chirpsList.map(chirp => { <Fragment>{chirp.toString()}</Fragment> })}</div> */
-}
 
 /***/ }),
 /* 24 */

@@ -1,12 +1,13 @@
 import React, { Component, Fragment } from "react";
 import { BrowserRouter as Router, Link, Switch, Route } from "react-router-dom";
-import NewChirp from "./NewChirp";
+import Home from "./Home";
 import ChirpStyle from "./ChirpStyle";
 import NavBar from "./NavBar";
 import SideBarLeft from "./SideBarLeft";
 import SideBarRight from "./SideBarRight";
 import SingleChirp from "./SingleChirp";
 import EditChirp from "./EditChirp";
+import UserMentions from "./UserMentions";
 
 class App extends Component {
   render() {
@@ -22,9 +23,10 @@ class App extends Component {
                 </div>
                 <div className="col-lg-6">
                   <Switch>
-                    <Route exact path="/" component={NewChirp} />
+                    <Route exact path="/" component={Home} />
                     <Route exact path="/:id" component={SingleChirp} />
                     <Route exact path="/:id/edit" component={EditChirp} />
+                    <Route exact path="/mentions/:id" component={UserMentions} />
                   </Switch>
                 </div>
                 <div className="col-lg-3">

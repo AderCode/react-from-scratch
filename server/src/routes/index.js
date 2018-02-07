@@ -1,7 +1,10 @@
-const express = require('express');
-const chirpsRouter = require('./chirps');
-let router = express.Router();
+import { Router } from 'express';
+import chirpsRouter from './chirps';
+import mentionsRouter from './mentions'
+
+let router = Router();
 
 router.use('/chirps', chirpsRouter);
+router.use('/mentions', mentionsRouter)
 
-module.exports = router;
+export default router;

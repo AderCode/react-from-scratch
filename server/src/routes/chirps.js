@@ -1,8 +1,9 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
+import store from "../db";
+
 const router = express.Router();
-// const store = require("../middleware/chirpsstore");
-const store = require("../db");
+
 
 router.get("/:id?", (req, res) => {
   let id = req.params.id;
@@ -43,4 +44,4 @@ router.delete("/:id?", (req, res) => {
   res.redirect("/");
 });
 
-module.exports = router;
+export default router;

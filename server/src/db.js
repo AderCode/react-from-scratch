@@ -28,7 +28,7 @@ let getChirps = () => {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
     });
@@ -41,7 +41,7 @@ let getChirp = (id) => {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
 
@@ -51,11 +51,11 @@ let getChirp = (id) => {
 
 let deleteChirp = (id) => {
   return new Promise((resolve, reject) => {
-    connection.query(`DELETE FROM chirps WHERE id = ${id}`, (err, results, field) => {
+    connection.query(`DELETE FROM mentions WHERE chirpid = ${id}; DELETE FROM chirps WHERE id = ${id};`, (err, results, field) => {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
 
@@ -69,7 +69,7 @@ let updateChirp = (id, text) => {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
 
@@ -83,28 +83,21 @@ let createChirp = (userid, text, location) => {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
-      checkMentions(text, chirpid)
+      checkMentions(text, userid)
       resolve(results);
 
     });
   });
 };
 
-let createMention = (userid, chirpid) => {
-  return new Promise((resolve, reject) => {
-    connection.query(`insert into mentions (userid, chirpid) values (${userid}, '${chirpid}');`, (err, results, field) => {
-      if (err) {
-        reject();
-        connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
-      }
-      resolve(results);
 
-    });
-  });
-};
+
+
+
+
+
 
 let getMentions = (userid) => {
   return new Promise((resolve, reject) => {
@@ -112,7 +105,7 @@ let getMentions = (userid) => {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
 
@@ -120,28 +113,93 @@ let getMentions = (userid) => {
   });
 };
 
-let checkMentions = (text, chirpid) => {
+
+
+
+
+
+let checkMentions = (text, userid) => {
   return new Promise((resolve, reject) => {
-    connection.query(`select from chirps where id = ${chirpid}`, (err, results, field) => {
+    connection.query(`select * from chirps where userid = ${userid} and text = '${text}'`, (err, results, field) => {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
-      }
-      let str = results.text.split(' ');
-      let index;
-      for (let i = 0; i < str.length; i++) {
-        let check = str[i].includes('@')
-        if (check === true) {
-          index = i;
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
+      } else {
+        console.log('\x1b[32m', '(>^.^)> Checking for Mentions...', '\x1b[0m')
+        console.log('\x1b[32m', '(>^.^)> 1. results[0].text = ', results[0].text, '\x1b[0m');
+        let str = results[0].text.split(" ");
+        console.log('\x1b[32m', '(>^.^)> 2. str = ', str, '\x1b[0m');
+        let index;
+        for (let i = 0; i < str.length; i++) {
+          let check = str[i].includes('@');
+          if (check === true) {
+            index = i;
+          };
+        };
+        console.log('\x1b[32m', '(>^.^)> 3. index = ', index, '\x1b[0m');
+        let chirpid = results[0].id;
+        console.log('\x1b[32m', '(>^.^)> 4. chirpid = ', chirpid, '\x1b[0m');
+        let userHandle = str[index];
+        console.log('\x1b[32m', '(>^.^)> 5. userHandle = ', userHandle, '\x1b[0m')
+        
+        if (userHandle) {
+        prepareMentions(userHandle, chirpid)
+        console.log('\x1b[32m', '(>^.^)> Mention Found. Passing params to PrepareMention()', '\x1b[0m', '\n')
+        } else {
+        console.log('\x1b[32m', '(>^.^)> No Mention Found.', '\x1b[0m', '\n')
         }
+
+        resolve();
+      };
+    });
+  });
+};
+
+
+
+
+
+
+let prepareMentions = (userHandle, chirpid) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`SELECT * FROM users WHERE handle = '${userHandle}'`, (err, results, field) => {
+      if (err) {
+        reject();
+        connection.end();
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
-      let userName = str[index].slice(1)
-      let userid;
-      connection.query(`SELECT u.id FROM users u WHERE name LIKE ${userName}`, (err, results, field) => {
-        userid = results.id;
-      }) 
-      createMention(userid, chirpid)
+      console.log('\x1b[32m', '(>^.^)> Preparing Mentions...', '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> 1. results = ', results, '\x1b[0m');
+      if (results[0].id) {
+      console.log('\x1b[32m', '(>^.^)> User Found. Passing params to CreateMention().', '\x1b[0m', '\n');
+      createMention(results[0].id, chirpid)
+      } else {
+      console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", "User not found in database.", "\x1b[0m", '\n');
+      }
+      resolve();
+    });
+  });
+};
+
+
+
+
+
+
+let createMention = (userid, chirpid) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`insert into mentions (userid, chirpid) values (${userid}, '${chirpid}');`, (err, results, field) => {
+      if (err) {
+        reject();
+        connection.end();
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
+      }
+      console.log('\x1b[32m', '(>^.^)> Creating Mention...', '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> 1. chirpid = ', chirpid, '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> 2. chirpid = ', userid, '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> Mention Created.', '\x1b[0m', '\n')
+
       resolve(results);
 
     });
@@ -153,9 +211,10 @@ let checkMentions = (text, chirpid) => {
 
 
 module.exports = {
-      CreateChirp: createChirp,
-      DeleteChirp: deleteChirp,
-    GetChirps: getChirps,
-    GetChirp: getChirp,
-    UpdateChirp: updateChirp
+  CreateChirp: createChirp,
+  DeleteChirp: deleteChirp,
+  GetChirps: getChirps,
+  GetChirp: getChirp,
+  UpdateChirp: updateChirp,
+  GetMentions: getMentions
 };

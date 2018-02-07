@@ -1,8 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Avatar from "./Avatar";
-import { Link } from 'react-router-dom';
 
-class ChirpStyle extends Component {
+class UserMentions extends Component {
   constructor(props) {
     super(props);
 
@@ -12,7 +11,7 @@ class ChirpStyle extends Component {
   }
 
   componentDidMount() {
-    let url = `/api/chirps/`;
+    let url = `/api/mentions/${this.props.match.params.id}`;
     // if (this.props.match.params.id) {
     //   return (url = `/api/chirps/${this.props.match.params.id}`);
     // }
@@ -21,12 +20,13 @@ class ChirpStyle extends Component {
         console.log("1st .then res = ", res);
         return res.json();
       })
-      .then(obj => {
-        console.log("2nd .then obj = ", obj);
-        let listChirps = Object.keys(obj).map(id => {
-          console.log(`obj[${id}.text = ]`, obj[id].text);
+      .then(arr => {
+        console.log("2nd .then obj = ", arr[0]);
+        let listChirps = Object.keys(arr[0]).map(id => {
+        //   console.log(`obj[${id}.text = ]`, arr[id].text);
+          console.log('arr[0][id] = ', arr[0][id]);
           return (
-            <div key={`${obj[id].id}`} onClick={() => { window.location = `/${obj[id].id}` }}>
+            <div key={`${arr[0][id].id}`} onClick={()=>{window.location = `/${arr[0][id].id}`}}>
               <div className="card mt-1 mb-1">
                 <div className="text-left mt-2">
                   <div className="media ml-2">
@@ -34,18 +34,14 @@ class ChirpStyle extends Component {
                       <Avatar />
                     </div>
                     <div className="media-body ml-2 d-inline">
-                      <h5 className="mt-0 d-inline mx-1">
-                        <Link to={`/mentions/${obj[id].userid}`}>
-                          Name{obj[id].userid}
-                        </Link>
-                       </h5>
-                      <h6 className="mt-0 d-inline mx-1 text-muted">@Handle</h6>
-                      <h6 className="mt-0 d-inline mx-1 text-muted">Time</h6>
+                      <h5 className="mt-0 d-inline mx-1">Name_Holder</h5>
+                      <h6 className="mt-0 d-inline mx-1 text-muted">@Handle_Holder</h6>
+                      <h6 className="mt-0 d-inline mx-1 text-muted">Time_Holder</h6>
                     </div>
                   </div>
                 </div>
                 <div className="card-body text-left ml-5 pt-0">
-                  {obj[id].text}
+                  {arr[0][id].text}
                 </div>
               </div>
             </div>
@@ -61,7 +57,7 @@ class ChirpStyle extends Component {
   }
 }
 
-export default ChirpStyle;
+export default UserMentions;
 
 {
   /* <div>{this.state.chirpsList.map(chirp => { <Fragment>{chirp.toString()}</Fragment> })}</div> */

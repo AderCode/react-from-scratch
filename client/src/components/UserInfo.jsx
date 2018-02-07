@@ -7,7 +7,7 @@ class UserInfo extends Component {
     super(props);
 
     this.state = {
-      name: "Aderhold"
+      name: "Name6"
     };
   }
 
@@ -34,7 +34,7 @@ class UserInfo extends Component {
           </div>
           <div className="ml-5 text-left pl-3">
             <h4 className="card-text pb-0 mb-0">{this.state.name}</h4>
-            <h6 className="text-muted pt-0 mt-0">@MwAderhold</h6>
+            <h6 className="text-muted pt-0 mt-0">@name6</h6>
           </div>
         </div>
         <div className="text-left">

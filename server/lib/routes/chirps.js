@@ -1,19 +1,33 @@
 "use strict";
 
-var express = require("express");
-var cors = require("cors");
-var router = express.Router();
-// const store = require("../middleware/chirpsstore");
-var store = require("../db");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _express = require("express");
+
+var _express2 = _interopRequireDefault(_express);
+
+var _cors = require("cors");
+
+var _cors2 = _interopRequireDefault(_cors);
+
+var _db = require("../db");
+
+var _db2 = _interopRequireDefault(_db);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var router = _express2.default.Router();
 
 router.get("/:id?", function (req, res) {
   var id = req.params.id;
   if (id) {
-    store.GetChirp(id).then(function (results) {
+    _db2.default.GetChirp(id).then(function (results) {
       res.send(results);
     });
   } else {
-    store.GetChirps().then(function (results) {
+    _db2.default.GetChirps().then(function (results) {
       res.send(results);
     });
   }
@@ -21,7 +35,7 @@ router.get("/:id?", function (req, res) {
 });
 
 router.post("/", function (req, res) {
-  store.CreateChirp(1, "" + req.body.text, 'school');
+  _db2.default.CreateChirp(1, "" + req.body.text, 'school');
   // console.log("req.body = ", req.body.text);
   // console.log("req.body = ", req.body);
   //   console.log('req.body.text = ', req.body.text)
@@ -31,7 +45,7 @@ router.post("/", function (req, res) {
 
 router.put("/:id?", function (req, res) {
   var id = req.params.id;
-  store.UpdateChirp(id, req.body.text);
+  _db2.default.UpdateChirp(id, req.body.text);
   console.log(id);
   console.log(req.body.text);
   res.status(200);
@@ -40,9 +54,9 @@ router.put("/:id?", function (req, res) {
 
 router.delete("/:id?", function (req, res) {
   var id = req.params.id;
-  store.DeleteChirp(id);
+  _db2.default.DeleteChirp(id);
   res.status(200);
   res.redirect("/");
 });
 
-module.exports = router;
+exports.default = router;

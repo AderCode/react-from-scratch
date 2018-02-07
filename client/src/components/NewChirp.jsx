@@ -68,7 +68,6 @@ class NewChirp extends React.Component {
 
   render() {
     return (
-      <Fragment>
         <div className="col justify-content-lg-center border bg-white">
           <div className="form-group text-left">
             <h6 className="mt-3">
@@ -94,8 +93,6 @@ class NewChirp extends React.Component {
             </form>
           </div>
         </div>
-        <ChirpStyle />
-      </Fragment>
     );
   }
 }

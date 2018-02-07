@@ -30,7 +30,7 @@ var getChirps = function getChirps() {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
     });
@@ -43,7 +43,7 @@ var getChirp = function getChirp(id) {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
     });
@@ -52,11 +52,11 @@ var getChirp = function getChirp(id) {
 
 var deleteChirp = function deleteChirp(id) {
   return new Promise(function (resolve, reject) {
-    connection.query("DELETE FROM chirps WHERE id = " + id, function (err, results, field) {
+    connection.query("DELETE FROM mentions WHERE chirpid = " + id + "; DELETE FROM chirps WHERE id = " + id + ";", function (err, results, field) {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
     });
@@ -69,7 +69,7 @@ var updateChirp = function updateChirp(id, text) {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
     });
@@ -82,22 +82,9 @@ var createChirp = function createChirp(userid, text, location) {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
-      checkMentions(text, chirpid);
-      resolve(results);
-    });
-  });
-};
-
-var createMention = function createMention(userid, chirpid) {
-  return new Promise(function (resolve, reject) {
-    connection.query("insert into mentions (userid, chirpid) values (" + userid + ", '" + chirpid + "');", function (err, results, field) {
-      if (err) {
-        reject();
-        connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
-      }
+      checkMentions(text, userid);
       resolve(results);
     });
   });
@@ -109,35 +96,85 @@ var getMentions = function getMentions(userid) {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
       resolve(results);
     });
   });
 };
 
-var checkMentions = function checkMentions(text, chirpid) {
+var checkMentions = function checkMentions(text, userid) {
   return new Promise(function (resolve, reject) {
-    connection.query("select from chirps where id = " + chirpid, function (err, results, field) {
+    connection.query("select * from chirps where userid = " + userid + " and text = '" + text + "'", function (err, results, field) {
       if (err) {
         reject();
         connection.end();
-        return console.log("¯_(ツ)_/¯ : ", err);
-      }
-      var str = results.text.split(' ');
-      var index = void 0;
-      for (var i = 0; i < str.length; i++) {
-        var check = str[i].includes('@');
-        if (check === true) {
-          index = i;
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
+      } else {
+        console.log('\x1b[32m', '(>^.^)> Checking for Mentions...', '\x1b[0m');
+        console.log('\x1b[32m', '(>^.^)> 1. results[0].text = ', results[0].text, '\x1b[0m');
+        var str = results[0].text.split(" ");
+        console.log('\x1b[32m', '(>^.^)> 2. str = ', str, '\x1b[0m');
+        var index = void 0;
+        for (var i = 0; i < str.length; i++) {
+          var check = str[i].includes('@');
+          if (check === true) {
+            index = i;
+          };
+        };
+        console.log('\x1b[32m', '(>^.^)> 3. index = ', index, '\x1b[0m');
+        var chirpid = results[0].id;
+        console.log('\x1b[32m', '(>^.^)> 4. chirpid = ', chirpid, '\x1b[0m');
+        var userHandle = str[index];
+        console.log('\x1b[32m', '(>^.^)> 5. userHandle = ', userHandle, '\x1b[0m');
+
+        if (userHandle) {
+          prepareMentions(userHandle, chirpid);
+          console.log('\x1b[32m', '(>^.^)> Mention Found. Passing params to PrepareMention()', '\x1b[0m', '\n');
+        } else {
+          console.log('\x1b[32m', '(>^.^)> No Mention Found.', '\x1b[0m', '\n');
         }
+
+        resolve();
+      };
+    });
+  });
+};
+
+var prepareMentions = function prepareMentions(userHandle, chirpid) {
+  return new Promise(function (resolve, reject) {
+    connection.query("SELECT * FROM users WHERE handle = '" + userHandle + "'", function (err, results, field) {
+      if (err) {
+        reject();
+        connection.end();
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
       }
-      var userName = str[index].slice(1);
-      var userid = void 0;
-      connection.query("SELECT u.id FROM users u WHERE name LIKE " + userName, function (err, results, field) {
-        userid = results.id;
-      });
-      createMention(userid, chirpid);
+      console.log('\x1b[32m', '(>^.^)> Preparing Mentions...', '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> 1. results = ', results, '\x1b[0m');
+      if (results[0].id) {
+        console.log('\x1b[32m', '(>^.^)> User Found. Passing params to CreateMention().', '\x1b[0m', '\n');
+        createMention(results[0].id, chirpid);
+      } else {
+        console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", "User not found in database.", "\x1b[0m", '\n');
+      }
+      resolve();
+    });
+  });
+};
+
+var createMention = function createMention(userid, chirpid) {
+  return new Promise(function (resolve, reject) {
+    connection.query("insert into mentions (userid, chirpid) values (" + userid + ", '" + chirpid + "');", function (err, results, field) {
+      if (err) {
+        reject();
+        connection.end();
+        return console.log("\x1b[31m", "¯l_(ツ)_/¯ err: ", err, "\x1b[0m");
+      }
+      console.log('\x1b[32m', '(>^.^)> Creating Mention...', '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> 1. chirpid = ', chirpid, '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> 2. chirpid = ', userid, '\x1b[0m');
+      console.log('\x1b[32m', '(>^.^)> Mention Created.', '\x1b[0m', '\n');
+
       resolve(results);
     });
   });
@@ -148,5 +185,6 @@ module.exports = {
   DeleteChirp: deleteChirp,
   GetChirps: getChirps,
   GetChirp: getChirp,
-  UpdateChirp: updateChirp
+  UpdateChirp: updateChirp,
+  GetMentions: getMentions
 };

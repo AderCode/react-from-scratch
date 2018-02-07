@@ -29,5 +29,5 @@ app.use(_routing2.default);
 
 var port = process.env.PORT || 3000;
 app.listen(port, function () {
-    console.log('Server listening on port ' + port);
+    console.log('\x1b[32m', 'Server running on port ' + port + '...', '\x1b[0m', '\n');
 });

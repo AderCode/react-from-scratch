@@ -16,5 +16,5 @@ app.use(stateRouting);
 
 let port = process.env.PORT || 3000;
 app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
+    console.log('\x1b[32m', `Server running on port ${port}...`, '\x1b[0m', '\n');
 });

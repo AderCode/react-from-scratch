@@ -10,7 +10,7 @@ class WhoToFollow extends Component {
         </div>
         <div className="border-bottom">
           <div className="d-inline ml-1">
-            {/* <img src={require(`../srcImages/covalence.jpg`)} alt="icon" /> */}
+            <img src="../../srcImages/covalence.jpg" alt="icon" />
           </div>
           <div className="d-inline pl-2">
             <span>Covalence</span>
@@ -23,7 +23,7 @@ class WhoToFollow extends Component {
         </div>
         <div className="border-bottom mt-2">
           <div className="d-inline">
-            {/* <img src={require(`../srcImages/apps.ico`)} alt="icon" /> */}
+            <img src="../../srcImages/apps.ico" alt="icon" />
           </div>
           <div className="d-inline pl-2">
             <span>ReactJS</span>
@@ -36,7 +36,7 @@ class WhoToFollow extends Component {
         </div>
         <div className="border-bottom mt-2">
           <div className="ml-1 d-inline">
-            {/* <img src={require(`../srcImages/test-icon.jpg`)} alt="icon" /> */}
+            <img src="../../srcImages/test-icon.jpg" alt="icon" />
           </div>
           <div className="d-inline pl-2">
             <span>Paul Dobbs</span>

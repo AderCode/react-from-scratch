@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom'
 import Avatar from "./Avatar"
 
 class NavBar extends Component {
@@ -21,30 +22,30 @@ class NavBar extends Component {
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav">
                 <li className="nav-item active">
-                  <a className="nav-link" href="localhost:3000">
-                    Home <span className="sr-only">(current)</span>
-                  </a>
+                <Link className="nav-link" to="/">
+                    Home
+                </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="localhost:3000">
+                <Link className="nav-link disabled" to="#">
                     Memories
-                  </a>
+                </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="localhost:3000">
+                <Link className="nav-link disabled" to="#">
                     Notifications
-                  </a>
+                </Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link disabled" href="localhost:3000">
+                <Link className="nav-link disabled" to="#">
                     Messages
-                  </a>
+                </Link>
                 </li>
               </ul>
             <a className="mx-auto" href="localhost:3000">
               <img
                 className=""
-                // src={require(`../srcImages/chirpers_text.png`)}
+                src='../srcImages/chirpers_text.png'
                 width="30"
                 height="30"
                 alt="Chirper"

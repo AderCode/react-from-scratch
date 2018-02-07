@@ -3,20 +3,26 @@
 var express = require("express");
 var cors = require("cors");
 var router = express.Router();
-var store = require("../middleware/chirpsstore");
+// const store = require("../middleware/chirpsstore");
+var store = require("../db");
 
 router.get("/:id?", function (req, res) {
   var id = req.params.id;
   if (id) {
-    res.json(store.GetChirp(id));
+    store.GetChirp(id).then(function (results) {
+      res.send(results);
+    });
   } else {
-    res.send(store.GetChirps());
+    store.GetChirps().then(function (results) {
+      res.send(results);
+    });
   }
+  // console.log(res)
 });
 
 router.post("/", function (req, res) {
-  store.CreateChirp(req.body);
-  console.log('req.body = ', req.body);
+  store.CreateChirp(1, "" + req.body.text, 'school');
+  // console.log("req.body = ", req.body.text);
   // console.log("req.body = ", req.body);
   //   console.log('req.body.text = ', req.body.text)
   res.status(200);
@@ -25,9 +31,9 @@ router.post("/", function (req, res) {
 
 router.put("/:id?", function (req, res) {
   var id = req.params.id;
-  store.UpdateChirp(id, req.body);
+  store.UpdateChirp(id, req.body.text);
   console.log(id);
-  console.log(req.body);
+  console.log(req.body.text);
   res.status(200);
   res.redirect("/");
 });

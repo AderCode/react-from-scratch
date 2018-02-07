@@ -6,6 +6,7 @@ import NavBar from "./NavBar";
 import SideBarLeft from "./SideBarLeft";
 import SideBarRight from "./SideBarRight";
 import SingleChirp from "./SingleChirp";
+import EditChirp from "./EditChirp";
 
 class App extends Component {
   render() {
@@ -23,11 +24,7 @@ class App extends Component {
                   <Switch>
                     <Route exact path="/" component={NewChirp} />
                     <Route exact path="/:id" component={SingleChirp} />
-                    {/* <Route
-                      exact
-                      path="/api/chirps/:id"
-                      component={SingleChirp} */}
-                    {/* /> */}
+                    <Route exact path="/:id/edit" component={EditChirp} />
                   </Switch>
                 </div>
                 <div className="col-lg-3">

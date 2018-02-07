@@ -1,15 +1,22 @@
-import React from 'react';
+import React from "react";
 
 class Avatar extends React.Component {
-    render() {
-        return (
-            <img className="border border-white rounded-circle"
-            // src={require(`../srcImages/headshot-thumbnail.jpg`)}
-            alt={this.props.name}
-            style={{height: '50px', width: '50px'}}
-            />
-        )
+  render() {
+    let picStyle;
+    if (this.props.style) {
+      picStyle = this.props.style;
+    } else {
+      picStyle = { height: '50px', width: '50px'}
     }
+    return (
+      <img
+        className="border border-white rounded-circle"
+        src="../srcImages/headshot-thumbnail.jpg"
+        alt={this.props.name}
+        style={picStyle}
+      />
+    );
+  }
 }
 
 export default Avatar;

@@ -17,15 +17,15 @@ class ChirpStyle extends Component {
     // }
     fetch(url)
       .then(res => {
-        // console.log("1st .then res = ", res);
+        console.log("1st .then res = ", res);
         return res.json();
       })
       .then(obj => {
-        // console.log("2nd .then obj = ", obj);
+        console.log("2nd .then obj = ", obj);
         let listChirps = Object.keys(obj).map(id => {
-          // console.log(`obj[${id}.text = ]`, obj[id].text);
+          console.log(`obj[${id}.text = ]`, obj[id].text);
           return (
-            <div key={`${id}`} onClick={()=>{window.location = `/${id}`}}>
+            <div key={`${obj[id].id}`} onClick={()=>{window.location = `/${obj[id].id}`}}>
               <div className="card mt-1 mb-1">
                 <div className="text-left mt-2">
                   <div className="media ml-2">
@@ -46,7 +46,6 @@ class ChirpStyle extends Component {
             </div>
           );
         });
-        listChirps.pop();
         this.setState({ chirps: listChirps });
       });
   }
